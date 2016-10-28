@@ -1,10 +1,10 @@
 package main
 
 import (
-  	"log"
-  	"time"
+    "log"
+    "time"
 
-  	"gopkg.in/mgo.v2"
+    "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
 )
 
@@ -12,31 +12,31 @@ var connection, err = mgo.Dial("localhost")
 var database = connection.DB("user_event")
 
 func save(data map[string]interface{}, collection string) bool {
-  	if err != nil {
-    		log.Fatal(err)
-  	}
+    if err != nil {
+    	log.Fatal(err)
+    }
 
-  	cursor := database.C(collection)
-  	err = cursor.Insert(data)
-  	if err != nil {
-    		log.Panic(err)
-    		return false
-  	}
-  	return true
+    cursor := database.C(collection)
+    err = cursor.Insert(data)
+    if err != nil {
+    	log.Panic(err)
+    	return false
+    }
+    return true
 }
 
 func SaveUserEvent(userEvent map[string]interface{}) {
-  	save(userEvent, userEvent["APIKey"].(string))
+    save(userEvent, userEvent["APIKey"].(string))
     return
 }
 
 func SaveResponseTime(responseTime int64) {
-  	var responseTimeData = map[string]interface{}{
-    		"response_time": responseTime,
-    		"timestamp": time.Now(),
-  	}
+    var responseTimeData = map[string]interface{}{
+    	"response_time": responseTime,
+    	"timestamp": time.Now(),
+    }
 
-  	save(responseTimeData, "time_stats")
+    save(responseTimeData, "time_stats")
     return
 }
 
